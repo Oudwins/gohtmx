@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{.Title}}</title>
+    <!-- TODO Remove this & load it locally -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.6"
+      integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+        }
+        15% {
+          opacity: 100%;
+        }
+        85% {
+          opacity: 100%;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+      #alertboxwrapper {
+        animation: fadeIn ease-in 3s;
+      }
+    </style>
+  </head>
+  <body>
+    {{embed}}
+    <div id="globalAlertBox"></div>
+    <script>
+      document.body.addEventListener("htmx:beforeSwap", function (evt) {
+        console.log(evt);
+        const aceptStatus = [400, 401, 403];
+
+        if (aceptStatus.includes(evt.detail.xhr.status)) {
+          evt.detail.shouldSwap = true;
+          evt.detail.isError = false;
+          evt.detail.target = htmx.find("#globalAlertBox");
+        }
+      });
+      function removeMe(e) {
+        e.remove();
+      }
+    </script>
+  </body>
+</html>
